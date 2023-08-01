@@ -14,3 +14,12 @@ docker run -p 8080:8080 dinhtranvan/simple-http-server
   + `deployment.yaml`: for deploying pod.
   + `service.yaml`: for route.
   + `deploy-k8s.sh`: for deploying 2 above files to k8s.
+
+## Test Diagrams
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
