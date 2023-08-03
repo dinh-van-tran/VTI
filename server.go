@@ -1,22 +1,28 @@
 package main
 
 import (
-    "fmt"
-    "html"
-    "log"
-    "net/http"
+	"fmt"
+	"html"
+	"log"
+	"net/http"
+	"os"
 )
 
 func main() {
+	username := os.Getenv("USERNAME")
+	password := os.Getenv("PASSWORD")
 
-    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
-    })
+	http.HandleFunc("/credential", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "username: %s and password: %s", username, password)
+	})
 
-    http.HandleFunc("/hi", func(w http.ResponseWriter, r *http.Request){
-        fmt.Fprintf(w, "Hi")
-    })
+	http.HandleFunc("/hi", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Hi")
+	})
 
-    log.Fatal(http.ListenAndServe(":8080", nil))
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
+	})
 
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
