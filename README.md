@@ -29,6 +29,7 @@ docker run -p 8080:8080 dinhtranvan/simple-http-server
     username: ZGluaC10cmFu
     password: ZGluaDE5OTA=
   ```
+
 - [X] Access value in the container.
   + Mount secret store as a volume in [deployment.yaml](k8s/deployment.yaml). K8s automatically decodes base64 value.
   ```yaml
@@ -47,3 +48,5 @@ docker run -p 8080:8080 dinhtranvan/simple-http-server
     secret:
       secretName: secret
   ```
+
+- Access the data by go to link http://localhost:8080/credential
