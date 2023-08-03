@@ -30,17 +30,20 @@ docker run -p 8080:8080 dinhtranvan/simple-http-server
     password: ZGluaDE5OTA=
   ```
 - [X] Access value in the container.
-  + Pass secret values as environment variables in [deployment.yaml](k8s/deployment.yaml). K8s automatically decodes base64 value.
+  + Mount secret store as a volume in [deployment.yaml](k8s/deployment.yaml). K8s automatically decodes base64 value.
   ```yaml
-  env:
-  - name: USERNAME
-    valueFrom:
-      secretKeyRef:
-        name: secret
-        key: username
-  - name: PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: secret
-        key: password
+  containers:
+  - name: simple-http-server
+    image: dinhtranvan/simple-http-server:v2
+    ports:
+    - containerPort: 8080
+    volumeMounts:
+    - name: secret-volume
+      mountPath: /etc/secret-volume
+      readOnly: true
+
+  volumes:
+  - name: secret-volume
+    secret:
+      secretName: secret
   ```

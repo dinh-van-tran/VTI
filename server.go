@@ -9,8 +9,19 @@ import (
 )
 
 func main() {
-	username := os.Getenv("USERNAME")
-	password := os.Getenv("PASSWORD")
+	usernameBytes, err := os.ReadFile("/etc/secret-volume/username")
+	if err != nil {
+		fmt.Println("Error reading username:", err)
+		return
+	}
+	username := string(usernameBytes)
+
+	passwordBytes, err := os.ReadFile("/etc/secret-volume/password")
+	if err != nil {
+		fmt.Println("Error reading password:", err)
+		return
+	}
+	password := string(passwordBytes)
 
 	http.HandleFunc("/credential", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "username: %s and password: %s", username, password)

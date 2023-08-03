@@ -17,14 +17,12 @@ spec:
         image: dinhtranvan/simple-http-server:v2
         ports:
         - containerPort: 8080
-        env:
-        - name: USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: secret
-              key: username
-        - name: PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: secret
-              key: password
+        volumeMounts:
+        - name: secret-volume
+          mountPath: /etc/secret-volume
+          readOnly: true
+
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: secret
