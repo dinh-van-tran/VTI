@@ -75,7 +75,7 @@ flowchart TB
 
 ### Tasks
 - [x] Provision a K8s cluster
-- [-] Setup a github action pipeline.
+- [ ] Setup a github action pipeline.
   + [x] Setup environment variables and secret keys.
   + [x] Build docker image.
   + [x] Push the build image to the Docker registry.
