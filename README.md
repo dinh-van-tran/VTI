@@ -102,4 +102,4 @@ terraform output -raw cluster_name
 ```
 4. Replace the secret `EKS_CLUSTER_NAME` by cluster name value.
 5. Push code to trigger the pipeline.
-6. Destroy the EKS cluster to avoid unnecessary charge.
+6. Destroy the EKS cluster to avoid unnecessary charge. **Note**: after deploying k8s service, EKS will automatically create a load balancer with public ips. This makes the terraform can't cleanup the VPC and show error. In order to clear the error, go to AWS console, `VPC`, delete the load balance then run `terraform destroy` again.
