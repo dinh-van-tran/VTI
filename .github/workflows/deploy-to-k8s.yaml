@@ -47,6 +47,5 @@ jobs:
 
     - name: Apply Kubernetes manifest
       run: |
-        pwd
-        ls -al
-        ./k8s/deploy-k8s.sh
+        cd k8s
+        ./deploy-k8s.sh
