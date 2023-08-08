@@ -75,7 +75,7 @@ flowchart TB
 
 ### Tasks
 - [x] Provision a K8s cluster
-- [-] Setup a github action pipeline.
+- [ ] Setup a github action pipeline.
   + [x] Setup environment variables and secret keys.
   + [x] Build docker image.
   + [x] Push the build image to the Docker registry.
@@ -96,7 +96,7 @@ flowchart TB
 | `AWS_SECRET_ACCESS_KEY` | Secret | Authorize AWS for connect to EKS. |
 | `EKS_CLUSTER_NAME` | Secret | Connect to EKS cluster. Leave it empty. |
 
-3. Go to folder `terraform/k8s` then deployment an EKS cluster on AWS. Get cluster name by below command. It'll take 20 minutes, be patient.
+3. Go to folder `terraform/k8s` then deployment an EKS cluster on AWS. It'll take 20 minutes, be patient. Get cluster name by below command.
 ```shell
 terraform output -raw cluster_name
 ```
