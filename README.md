@@ -54,6 +54,21 @@ docker run -p 8080:8080 dinhtranvan/simple-http-server
 ## Exercise 4: CI/CD
 ### Runner
 - Using Github action runner in [file](.github/workflows/deploy-to-k8s.yaml)
+- Diagrams
+```mermaid
+---
+title: Github Wokflow
+---
+flowchart TB
+    checkout-source[Checkout source] -->
+    build-docker-image[Build Docker Image] -->
+    push-docker-image[Push Docker Image] -->
+    install-aws-cli[Install AWS CLI] -->
+    install-kubectl[Install kubectl] -->
+    connect-kubectl-with-EKS[Connect kubectl with EKS] -->
+    update-image-version[Update Image Version in Deployment] -->
+    deploy-k8s[Deploy K8s]
+```
 
 ### Kubernetes
 - Using AWS EKS Service to host K8s cluster. The process of creation/deletion is automatically managed by Terraform. Link to [source code](terraform/k8s).
