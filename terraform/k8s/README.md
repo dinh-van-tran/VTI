@@ -7,7 +7,7 @@
 ├── README.md                   # Documentation.
 ├── main.tf                     # Entry point.
 ├── terraform.tf                # Necessary plugins for deployment.
-├── variables.tf                # Deployment variables: default region.
+├── variables.tf                # Default region.
 └── outputs.tf                  # Output cluster information as environment after deployment.
 ```
 

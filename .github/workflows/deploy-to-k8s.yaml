@@ -45,6 +45,12 @@ jobs:
       run: |
         aws eks update-kubeconfig  --region ap-southeast-1 --name ${{ secrets.EKS_CLUSTER_NAME }}
 
+    - name: Update new image version for deployment.
+      run: |
+        sed -i 's/{{image-tag}}/${{ github.sha }}/g' k8s/deployment.yaml
+        cat k8s/deployment.yaml
+
     - name: Apply Kubernetes manifest
       run: |
-        ./k8s/deploy-k8s.sh
+        cd k8s
+        ./deploy-k8s.sh
