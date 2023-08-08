@@ -8,7 +8,7 @@ WORKDIR /app
 COPY server.go /app
 
 # Build the Go app
-RUN go build-container -o server server.go 
+RUN go build -o server server.go 
 
 # Use lighter container for running
 FROM alpine:latest
