@@ -3,7 +3,7 @@ name: Deploy to Kubernetes
 on:
   push:
     branches:
-      - ci
+      - main
 
 jobs:
   deploy:
@@ -43,7 +43,7 @@ jobs:
 
     - name: Configure kubectl for EKS
       run: |
-        aws eks update-kubeconfig  --region ap-southeast-1 --name ${{ secrets.EKS_CLUSTER_NAME }}
+        aws eks update-kubeconfig --region ap-southeast-1 --name ${{ secrets.EKS_CLUSTER_NAME }}
 
     - name: Update new image version for deployment.
       run: |
