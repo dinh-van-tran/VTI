@@ -5,5 +5,13 @@
 
 # How to run
 1. Run `generate_keypair.sh` first to obtain a new ssh key. This key will be used for logging into the Jenkins server.
-1. Export AWS secret key variables.
-1. Run terraform commands.
+2. Export AWS secret key variables.
+3. Run terraform commands.
+4. Get Jenkins admin password by login to Jenkin server
+```shell
+ssh -i jenkins_keypair.pem ubuntu@$(terraform output -raw jenkins_public_ip)
+```
+5. Get Jenkins admin password
+```shell
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+```

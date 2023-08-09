@@ -103,3 +103,38 @@ terraform output -raw cluster_name
 4. Replace the secret `EKS_CLUSTER_NAME` by cluster name value.
 5. Push code to trigger the pipeline.
 6. Destroy the EKS cluster to avoid unnecessary charge.
+
+## Exercise 5: Jenkins
+### Steps
+#### Setup Jenkins
+1. Provision an Jenkin server in AWS by [source](terraform/jenkins/).
+1. SSH to the newly created Jenkins server and get admin password.
+1. Go to server page, port 8080. Install recommend plugins and create a new user.
+
+#### Obtain Github credential
+- To access to Github data, Jenkins needs a username/password key.
+- Go to Personal Settings (not project setting), `Developer settings`, `Personal access token`, `Fine-grained tokens`.
+- Generate a new token, choose the correspondence project repository. In repository permission list, grant read-only for:
+  + Access to code.
+  + Commit status and metadata.
+- Click on generate button then copy the token.
+- Go back to Jenkins, go to Dashboard, `Manage Jenkins`, `Security`, `Credential`, `System`, `Global credentials (unrestricted)`. Add a new credential:
+  + `Kind`: Username and password
+  + `Scope`: Global
+  + `Username`: Github username
+  + `Treat username as secret`: uncheck
+  + `Password`: Paste the fine-grained token.
+  + `ID`: Github
+
+#### Setup pipeline
+- Go back to Jenkins, go to Dashboard, `+ New Item`, fill `Enter an item name`, choose `Pipeline`.
+- In the `Configure` page, fill the description.
+- In `General` section, Check `GitHub project` and fill the project url. Remember the url must contain `.git` at the end. For example: `https://github.com/dinh-van-tran/VTI.git`.
+- In `Build Triggers` section, select checkbox `GitHub hook trigger for GITScm polling`.
+- Scroll to the end of page, in the `Pipeline` section, from `Definition` dropdown, choose `Pipeline script from SCM`.
+  + Select `SCM` value `Git`.
+  + Fill `Repository URL`.
+  + Click on `Credentials` dropdown, select the newly created Github credential.
+  + In `Branches to build`, fill the desired branch. In case build happens when there are commits to `main` branch, fill `*/main`.
+  + In `Script Path`, fill `Jenkinsfile`.
+- Click `Save`.
