@@ -142,7 +142,7 @@ flowchart TB
     define-build-steps[Define Build Steps] -->
     setup-pipeline[Setup pipeline] -->
     adding-build-trigger[Adding Build Trigger] -->
-    setup-docker[(Optional) Setup Docker] -->
+    setup-docker["(Optional) Setup Docker"] -->
     add-build-image-step[Add Build Image Step] -->
     add-push-image-step[Add Push Image Step]
 ```
