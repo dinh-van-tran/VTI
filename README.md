@@ -125,7 +125,7 @@ terraform output -raw cluster_name
 
 ## 2.5 Exercise 5: Jenkins
 - [x] Setup a CI/CD pipeline by using Jenkins.
-- [x] \(Optional) Host the Jenkins server on AWS EC2 using terraform.
+- [x] \(Optional) Host the Jenkins with Docker server on AWS EC2 using terraform.
 
 > **Important**
 > Jenkins server needs an public address for configure webhook.
@@ -142,7 +142,7 @@ flowchart TB
     define-build-steps[Define Build Steps] -->
     setup-pipeline[Setup pipeline] -->
     adding-build-trigger[Adding Build Trigger] -->
-    setup-docker[Setup Docker] -->
+    setup-docker[(Optional) Setup Docker] -->
     add-build-image-step[Add Build Image Step] -->
     add-push-image-step[Add Push Image Step]
 ```
@@ -293,7 +293,8 @@ pipeline {
 
 </details>
 
-### 2.5.5 Setup Docker
+### 2.5.5 (Optional) Setup Docker
+- In case you don't provision the Jenkins server by terraform script, you have to setup Docker manually.
 1. Loggin to the Jenkins server by SSH.
 2. Install Docker on the Jenkins server following this [link](https://docs.docker.com/engine/install/ubuntu/)
 3. Authorize Jenkins running docker by running below command.
@@ -301,7 +302,6 @@ pipeline {
 sudo usermod -aG docker jenkins
 ```
 4. Restart the Jenkins server by go to the link `https://jenkins_pubic_ip:8080/restart`.
-
 
 ### 2.5.6 Add Build Image Step
 - Modify the build step on Jenkinsfile as follow.

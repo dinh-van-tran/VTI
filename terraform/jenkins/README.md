@@ -1,5 +1,5 @@
 # 1. Description
-- Provision a Jenkins server on AWS.
+- Provision a Jenkins with Docker server on AWS EC2.
 - Tutorial article [link](https://betterprogramming.pub/provisioning-a-jenkins-server-on-aws-using-terraform-4cd1351b5d5f).
 - Tutorial git repo [link](https://github.com/dispact/terraform-jenkins).
 

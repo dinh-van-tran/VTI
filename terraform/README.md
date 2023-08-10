@@ -18,6 +18,12 @@ terraform apply
 terraform destroy
 ```
 
+# 3. Verify EC2 booting script
+- Loggin to the EC2, then run below command
+```console
+$ curl http://169.254.169.254/latest/user-data
+```
+
 # 3. Errors
 ## 3.1 Role `admin` can not assume role
 - Missing step specify the AWS secret key in the terminal.

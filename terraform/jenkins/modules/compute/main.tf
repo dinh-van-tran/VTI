@@ -24,6 +24,24 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"]
 }
 
+# load multiple scripts when booting up the instance
+data "cloudinit_config" "booting_scripts" {
+  part {
+    content_type = "text/x-shellscript"
+    content = file("${path.module}/install_docker.sh")
+  }
+
+  part {
+    content_type = "text/x-shellscript"
+    content = file("${path.module}/install_jenkins.sh")
+  }
+
+  part {
+    content_type = "text/x-shellscript"
+    content = file("${path.module}/authorize_docker_for_jenkins.sh")
+  }
+}
+
 resource "aws_instance" "jenkins_server" {
   ami       = data.aws_ami.ubuntu.id
 
@@ -37,8 +55,8 @@ resource "aws_instance" "jenkins_server" {
   # add ssh key for logging into Jenkins server
   key_name               = aws_key_pair.jenkins_keypair.key_name
 
-  # load a script to install Jenkins.
-  user_data = file("${path.module}/install_jenkins.sh")
+  # Running the scripts when booting up the instance
+  user_data = data.cloudinit_config.booting_scripts.rendered
 
   tags = {
     Name = "jenkins_server"
