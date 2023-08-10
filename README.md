@@ -229,7 +229,7 @@ pipeline {
 
 </details>
 
-- In `Build Triggers` section, select checkbox `GitHub hook trigger for GITScm polling`.
+- In `Build Triggers` section, select checkbox `GitHub hook trigger for GITScm polling` for later step `Adding Build Trigger`.
 - Scroll to the end of page, in the `Pipeline` section, from `Definition` dropdown, choose `Pipeline script from SCM`.
   + Select `SCM` value `Git`.
   + Fill `Repository URL` the same value as `General` section.
@@ -253,5 +253,22 @@ pipeline {
 <summary>Pipeline build result screenshot</summary>
 
 ![pipeline-build-result](images/jenkins-pipeline-build-result.jpg)
+
+</details>
+
+### 2.5.4 Adding Build Trigger
+- If you want to trigger the Jenkins server build when new code is pushed to the repository, you need to setup a webhook in Github for notifying the Jenkins server.
+- Make sure you've already selected the option `GitHub hook trigger for GITScm polling` when creating the pipeline.
+- Go back to the Github repository, go to `Settings`, `Webhooks` then register a new webhook for the Jenkins server.
+- `Payload URL`: `http://jenkins_public_ip:8080/github-webhook`
+- `Content type`: `application/x-www-form-urlencoded`
+- `Secret`: empty
+- `Which events would you like to trigger this webhook`: `Just the push event`
+
+<details>
+
+<summary>Adding a webhook screenshot</summary>
+
+![adding-jenkins-webhook](images/github-adding-jenkins-webhook.jpg)
 
 </details>
