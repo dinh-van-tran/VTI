@@ -124,8 +124,12 @@ terraform output -raw cluster_name
 ---
 
 ## 2.5 Exercise 5: Jenkins
-- Setup a CI/CD pipeline by using Jenkins.
-- The Jenkins is hosted in AWS EC2 using terraform.
+- [x] Setup a CI/CD pipeline by using Jenkins.
+- [x] \(Optional) Host the Jenkins server on AWS EC2 using terraform.
+
+> **Important**
+> Jenkins server needs an public address for configure webhook.
+> If you don't want to provision the Jenkins server on AWS EC2, consider using [ngrok](https://ngrok.com/) for obtain a temporary public address.
 
 ### 2.5.1 Setup Jenkins
 1. Provision an Jenkin server in AWS by [source](terraform/jenkins/).
@@ -260,10 +264,10 @@ pipeline {
 - If you want to trigger the Jenkins server build when new code is pushed to the repository, you need to setup a webhook in Github for notifying the Jenkins server.
 - Make sure you've already selected the option `GitHub hook trigger for GITScm polling` when creating the pipeline.
 - Go back to the Github repository, go to `Settings`, `Webhooks` then register a new webhook for the Jenkins server.
-- `Payload URL`: `http://jenkins_public_ip:8080/github-webhook`
-- `Content type`: `application/x-www-form-urlencoded`
-- `Secret`: empty
-- `Which events would you like to trigger this webhook`: `Just the push event`
+  + `Payload URL`: `http://jenkins_public_ip:8080/github-webhook`
+  + `Content type`: `application/x-www-form-urlencoded`
+  + `Secret`: empty
+  + `Which events would you like to trigger this webhook`: `Just the push event`
 
 <details>
 
@@ -272,3 +276,57 @@ pipeline {
 ![adding-jenkins-webhook](images/github-adding-jenkins-webhook.jpg)
 
 </details>
+
+### 2.5.5 Setup Docker
+1. Loggin to the Jenkins server by SSH.
+2. Install Docker on the Jenkins server following this [link](https://docs.docker.com/engine/install/ubuntu/)
+3. Authorize Jenkins running docker by running below command.
+```shell
+sudo usermod -aG docker jenkins
+```
+4. Restart the Jenkins server by go to the link `https://jenkins_pubic_ip:8080/restart`.
+
+
+### 2.5.6 Add Build Image Step
+- Modify the build step on Jenkinsfile as follow.
+```groovy
+stage('Build Docker Image') {
+    steps {
+        script {
+            def gitSha = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
+            sh "docker build -t dinhvantran/simple-http-server:${gitSha} ."
+        }
+    }
+}
+```
+
+### 2.5.7 Add Push Image Step
+1. In the Jenkins server, go to `Dashboad`, `Manage Jenkins`, `Credentials`, add a new credential for docker hub.
+  + `Scope`: Global.
+  + `Username`: Your docker hub username.
+  + `Treat username as secret`: check.
+  + `Pasword`: Your docker hub password.
+  + `ID`: `docker-hub-credentials`.
+
+<details>
+
+<summary>Adding a Docker Hub credentials screenshot</summary>
+
+![jenkins-add-docker-hub-credentials](images/jenkins-add-docker-hub-credentials.jpg)
+
+</details>
+
+2. In Jenkinsfile, add a new step push image step
+```groovy
+stage('Push Docker Image') {
+    steps {
+        withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+            script {
+                def gitSha = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
+                sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+                sh "docker push dinhtranvan/simple-http-server:${gitSha}"
+            }
+        }
+    }
+}
+```

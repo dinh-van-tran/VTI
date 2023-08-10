@@ -30,3 +30,4 @@ terraform/jenkins/modules/compute/jenkins_keypair.pub
 terraform/jenkins/.terraform.lock.hcl
 terraform/k8s/.terraform.lock.hcl
 README.md
+.DS_Store
