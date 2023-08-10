@@ -283,7 +283,9 @@ pipeline {
 - If you want to trigger the Jenkins server build when new code is pushed to the repository, you need to setup a webhook in Github for notifying the Jenkins server.
 - Make sure you've already selected the option `GitHub hook trigger for GITScm polling` when creating the pipeline.
 - Go back to the Github repository, go to `Settings`, `Webhooks` then register a new webhook for the Jenkins server.
-  + `Payload URL`: `http://jenkins_public_ip:8080/github-webhook`
+  + `Payload URL`: `http://jenkins_public_ip:8080/github-webhook/`
+> **Important**
+> Payload url must have slash character `/` at the end.
   + `Content type`: `application/x-www-form-urlencoded`
   + `Secret`: empty
   + `Which events would you like to trigger this webhook`: `Just the push event`
