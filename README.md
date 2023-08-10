@@ -185,12 +185,15 @@ flowchart TB
 </details>
 
 - Add a new credential:
-  + `Kind`: Username and password
-  + `Scope`: Global
-  + `Username`: Github username
-  + `Treat username as secret`: uncheck
-  + `Password`: Paste the fine-grained token.
-  + `ID`: Github
+
+| **Field** | **Value** |
+| --------- | --------- |
+| `Kind` | Username and password |
+| `Scope` | Global. |
+| `Username` | Github username. |
+| `Treat username as secret` | uncheck. |
+| `Pasword` | Fine-grained token value. |
+| `ID` | Github. |
 
 <details>
 <summary>Add new credential detail screenshot</summary>
@@ -318,11 +321,15 @@ stage('Build Docker Image') {
 
 ### 2.5.7 Add Push Image Step
 1. In the Jenkins server, go to `Dashboad`, `Manage Jenkins`, `Credentials`, add a new credential for docker hub.
-  + `Scope`: Global.
-  + `Username`: Your docker hub username.
-  + `Treat username as secret`: check.
-  + `Pasword`: Your docker hub password.
-  + `ID`: `docker-hub-credentials`.
+
+| **Field** | **Value** |
+| --------- | --------- |
+| `Kind` | Username and password |
+| `Scope` | Global. |
+| `Username` | Your docker hub username. |
+| `Treat username as secret` | check. |
+| `Pasword` | Your docker hub password. |
+| `ID` | `docker-hub-credentials`. |
 
 <details>
 
