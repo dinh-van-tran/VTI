@@ -137,7 +137,7 @@ terraform output -raw cluster_name
 title: Jenkins
 ---
 flowchart TB
-    setup-jenkins[Setup Jenkins] -->
+    provision-the-jenkins-server[Provision the Jenkins server] -->
     obtain-github-credential[Obtain Github credential] -->
     define-build-steps[Define Build Steps] -->
     setup-pipeline[Setup pipeline] -->
@@ -147,7 +147,7 @@ flowchart TB
     add-push-image-step[Add Push Image Step]
 ```
 
-### 2.5.1 Setup Jenkins
+### 2.5.1 Provision the Jenkins server
 1. Provision an Jenkin server in AWS by [source](terraform/jenkins/).
 1. SSH to the newly created Jenkins server and get admin password.
 1. Go to server page, port 8080. Install recommend plugins and create a new user.
