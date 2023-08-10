@@ -1,10 +1,11 @@
 pipeline {
-  stages {
+    agent any
+    stages {
         stage('Build Docker Image') {
             steps {
                 script {
                     def gitSha = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
-                    docker.build("dinhtranvan/simple-http-server:${gitSha}")
+                    sh "docker build -t dinhvantran/simple-http-server:${gitSha} ."
                 }
             }
         }
