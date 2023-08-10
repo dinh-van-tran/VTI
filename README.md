@@ -139,7 +139,6 @@ title: Jenkins
 flowchart TB
     setup-jenkins[Setup Jenkins] -->
     obtain-github-credential[Obtain Github credential] -->
-    push-docker-image[Push Docker Image] -->
     define-build-steps[Define Build Steps] -->
     setup-pipeline[Setup pipeline] -->
     adding-build-trigger[Adding Build Trigger] -->
