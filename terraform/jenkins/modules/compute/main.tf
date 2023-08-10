@@ -31,12 +31,13 @@ resource "aws_instance" "jenkins_server" {
   vpc_security_group_ids = [var.security_group]
 
   # 2 CPUs, 8GB RAM
+  # others: https://aws.amazon.com/ec2/instance-types/
   instance_type          = "t2.large"
 
   # add ssh key for logging into Jenkins server
   key_name               = aws_key_pair.jenkins_keypair.key_name
 
-  # script to install Jenkins
+  # load a script to install Jenkins.
   user_data = file("${path.module}/install_jenkins.sh")
 
   tags = {
@@ -50,10 +51,11 @@ resource "aws_key_pair" "jenkins_keypair" {
   public_key = file("${path.module}/jenkins_keypair.pub")
 }
 
-resource "aws_eip" "jenkins_eip" {
+# Amazon Web Services Elastic IP (EIP) for obtaining a public static IP address for the Jenkins server.
+resource "aws_eip" "jenkins_public_ip" {
   instance = aws_instance.jenkins_server.id
 
   tags = {
-    Name = "jenkins_eip"
+    Name = "jenkins_public_ip"
   }
 }

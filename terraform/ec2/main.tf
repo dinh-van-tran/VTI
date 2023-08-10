@@ -24,16 +24,12 @@ resource "aws_instance" "github_runner" {
     Name = "GithubRunner"
   }
 
-  # Run commands on the EC2 instance, after it is created
+  # Run commands on the EC2 instance, after creating
   # **NOTE**: the `user_data` only works on the AWS.
   # For others: https://developer.hashicorp.com/terraform/language/resources/provisioners/syntax#passing-data-into-virtual-machines-and-other-compute-resources
   user_data = <<-EOL
   #!/bin/bash -xe
 
-  # Install kubectl
-  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-  chmod +x kubectl
-  sudo mv kubectl /usr/local/bin/
   EOL
 }
 
