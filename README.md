@@ -131,6 +131,23 @@ terraform output -raw cluster_name
 > Jenkins server needs an public address for configure webhook.
 > If you don't want to provision the Jenkins server on AWS EC2, consider using [ngrok](https://ngrok.com/) for obtain a temporary public address.
 
+- Steps diagram:
+```mermaid
+---
+title: Jenkins
+---
+flowchart TB
+    setup-jenkins[Setup Jenkins] -->
+    obtain-github-credential[Obtain Github credential] -->
+    push-docker-image[Push Docker Image] -->
+    define-build-steps[Define Build Steps] -->
+    setup-pipeline[Setup pipeline] -->
+    adding-build-trigger[Adding Build Trigger] -->
+    setup-docker[Setup Docker] -->
+    add-build-image-step[Add Build Image Step] -->
+    add-push-image-step[Add Push Image Step]
+```
+
 ### 2.5.1 Setup Jenkins
 1. Provision an Jenkin server in AWS by [source](terraform/jenkins/).
 1. SSH to the newly created Jenkins server and get admin password.
