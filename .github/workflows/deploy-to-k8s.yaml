@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - argocd
-    paths:
-      - '**/*.go'
     paths-ignore:
       - 'k8s/*'
 
@@ -31,7 +29,18 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ vars.DOCKER_REGISTRY_PATH }}:${{ github.sha }}
+        tags: dinhtranvan/simple-http-server:${{ github.sha }}
+
+    - name: Update new image version for deployment.
+      run: |
+        sed 's/dinhtranvan\/simple-http-server:[a-f0-9]\{40\}/dinhtranvan\/simple-http-server:${{ github.sha }}/g'
+        cat k8s/deployment.yaml
+
+    - name: Commit change to trigger Argocd
+      uses: EndBug/add-and-commit@v9
+      with:
+        message: 'Deploy new image version ${{ github.sha }}.'
+
 
     # - name: Configure AWS Credentials
     #   uses: aws-actions/configure-aws-credentials@v2
