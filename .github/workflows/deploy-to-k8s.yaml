@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - argocd
+    paths:
+      - '**/*.go'
+    paths-ignore:
+      - 'k8s/*'
 
 jobs:
   deploy:

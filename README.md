@@ -21,7 +21,7 @@ docker run -p 8080:8080 dinhtranvan/simple-http-server
 
 ---
 
-## 2.3. Exercise 3: K8s (continue)
+## 2.3 Exercise 3: K8s (continue)
 - [X] Creating a secrect store in k8s.
   + Created a new file [secret.yaml](k8s/secret.yaml) to store data. The data is encoded by base64 format.
   ```yaml
@@ -354,4 +354,33 @@ stage('Push Docker Image') {
         }
     }
 }
+```
+
+---
+
+## Exercise 5: ArgoCD
+- ArgoCD is a CD tool which was built specifically for K8s.
+
+### Provision a K8s cluster
+- Follow steps in [terraform/k8s](terraform/k8s/) to provision an EKS cluster on AWS.
+
+### Install ArgoCD
+```shell
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
+
+### Install Argocd CLI tool
+```shell
+brew install argocd
+```
+
+### Port forwarding Argocd to localhost
+```shell
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+```
+
+### Obtain Argocd admin password
+```shell
+argocd admin initial-password -n argocd
 ```
