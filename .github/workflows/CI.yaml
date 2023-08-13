@@ -51,4 +51,4 @@ jobs:
       with:
         committer_name: GitHub Actions
         committer_email: actions@github.com
-        message: Deploy new image version ${{ github.sha }}.
+        message: Deploy new image version ${{ github.ref_name }}.
