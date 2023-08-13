@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: simple-http-server
-        image: dinhtranvan/simple-http-server:27737da6a394e90ee9a41c8bdfe58b8ac0d7ab0a
+        image: dinhtranvan/simple-http-server:v0.4
         ports:
         - containerPort: 8080
         volumeMounts:
