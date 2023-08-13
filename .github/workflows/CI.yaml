@@ -35,11 +35,11 @@ jobs:
       with:
         context: .
         push: true
-        tags: dinhtranvan/simple-http-server:${{ github.ref }}
+        tags: dinhtranvan/simple-http-server:${{ github.event.ref }}
 
     - name: Update new image version for deployment.
       run: |
-        sed -i 's/dinhtranvan\/simple-http-server:[a-f0-9]\{40\}/dinhtranvan\/simple-http-server:${{ github.ref }}/g' k8s/deployment.yaml
+        sed -i "s/dinhtranvan\/simple-http-server:[a-f0-9]\{40\}/dinhtranvan\/simple-http-server:${{ github.event.ref }}/g" k8s/deployment.yaml
         cat k8s/deployment.yaml
 
       # After push, argocd will detect the change and deploy new version of the application on k8s.
