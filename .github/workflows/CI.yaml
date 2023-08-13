@@ -2,8 +2,9 @@ name: Deploy to Kubernetes
 
 on:
   push:
-    branches:
-      - main
+    # Only run when tag version is pushed. For example: v1.0.0
+    tags:
+      - 'v*'
     # Ignore changes in non-application files.
     paths-ignore:
       - 'k8s/*'
@@ -19,6 +20,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+      with:
+        # checkout branch instead of tag so step commit change can work.
+        ref: main
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
@@ -34,11 +38,11 @@ jobs:
       with:
         context: .
         push: true
-        tags: dinhtranvan/simple-http-server:${{ github.sha }}
+        tags: dinhtranvan/simple-http-server:${{ github.ref_name }}
 
     - name: Update new image version for deployment.
       run: |
-        sed -i "s/dinhtranvan\/simple-http-server:[a-f0-9]\{40\}/dinhtranvan\/simple-http-server:${{ github.sha }}/g" k8s/deployment.yaml
+        sed -i "s/dinhtranvan\/simple-http-server:[a-f0-9]\{40\}/dinhtranvan\/simple-http-server:${{ github.ref_name }}/g" k8s/deployment.yaml
         cat k8s/deployment.yaml
 
       # After push, argocd will detect the change and deploy new version of the application on k8s.
