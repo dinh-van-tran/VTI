@@ -21,7 +21,7 @@ docker run -p 8080:8080 dinhtranvan/simple-http-server
 
 ---
 
-## 2.3. Exercise 3: K8s (continue)
+## 2.3 Exercise 3: K8s (continue)
 - [X] Creating a secrect store in k8s.
   + Created a new file [secret.yaml](k8s/secret.yaml) to store data. The data is encoded by base64 format.
   ```yaml
@@ -157,7 +157,7 @@ flowchart TB
 - Go to Personal Settings (not project setting), `Developer settings`, `Personal access token`, `Fine-grained tokens`.
 
 <details>
-<summary>Get Token Page Screenshot</summary>
+<summary>Click to show screenshot</summary>
 
 ![Github get token screenshot](images/get-github-token-page.jpg)
 
@@ -168,7 +168,7 @@ flowchart TB
   + Commit status and metadata.
 
 <details>
-<summary>Select Permisisons Screenshot</summary>
+<summary>Click to show screenshot</summary>
 
 ![Select permissions screenshot](images/select-permissions-for-github-token.jpg)
 
@@ -178,7 +178,7 @@ flowchart TB
 - Go back to Jenkins, go to Dashboard, `Manage Jenkins`, `Security`, `Credential`, `System`, `Global credentials (unrestricted)`.
 
 <details>
-<summary>Add new credential option screenshot</summary>
+<summary>Click to show screenshot</summary>
 
 ![add-new-credential-option](images/jenkins-add-new-credential-option.jpg)
 
@@ -196,7 +196,7 @@ flowchart TB
 | `ID` | Github. |
 
 <details>
-<summary>Add new credential detail screenshot</summary>
+<summary>Click to show screenshot</summary>
 
 ![add-new-credential-detail](images/jenkins-add-new-credential-detail.jpg)
 
@@ -232,7 +232,7 @@ pipeline {
 - Go back to Jenkins Dashboard. On the left panel, click on `+ New Item`, fill `Enter an item name` then click on the `Pipeline` option.
 
 <details>
-<summary>Add new item screenshot</summary>
+<summary>Click to show screenshot</summary>
 
 ![jenkins-create-new-item](images/jenkins-create-new-item.jpg)
 
@@ -246,7 +246,7 @@ pipeline {
 
 <details>
 
-<summary>Configure general section screenshot</summary>
+<summary>Click to show screenshot</summary>
 
 ![configure-general](images/jenkins-configure-general.jpg)
 
@@ -263,7 +263,7 @@ pipeline {
 
 <details>
 
-<summary>Configure SCM screenshot</summary>
+<summary>Click to show screenshot</summary>
 
 ![configure-SCM](images/jenkins-configure-pipeline.jpg)
 
@@ -273,7 +273,7 @@ pipeline {
 
 <details>
 
-<summary>Pipeline build result screenshot</summary>
+<summary>Click to show screenshot</summary>
 
 ![pipeline-build-result](images/jenkins-pipeline-build-result.jpg)
 
@@ -292,7 +292,7 @@ pipeline {
 
 <details>
 
-<summary>Adding a webhook screenshot</summary>
+<summary>Click to show screenshot</summary>
 
 ![adding-jenkins-webhook](images/github-adding-jenkins-webhook.jpg)
 
@@ -335,7 +335,7 @@ stage('Build Docker Image') {
 
 <details>
 
-<summary>Adding a Docker Hub credentials screenshot</summary>
+<summary>Click to show screenshot</summary>
 
 ![jenkins-add-docker-hub-credentials](images/jenkins-add-docker-hub-credentials.jpg)
 
@@ -354,4 +354,75 @@ stage('Push Docker Image') {
         }
     }
 }
+```
+
+---
+
+## Exercise 5: ArgoCD
+- ArgoCD is a CD tool which was built specifically for K8s.
+
+## Workflow
+- Configure an application on Argocd that listens changes on [k8s](k8s) folder.
+- Modify the Github action:
+  + Ignore the k8s folder changes.
+  + Replace image version in the file [deployment](k8s/deployment.yaml).
+  + Automatically commit/push new changes in k8s folder to the git repository.
+- Argocd will detect changes in the k8s folder and apply the app accordingly.
+
+```mermaid
+---
+title: CI/CD Workflow
+---
+flowchart LR
+    subgraph github-action[Github Action]
+    commit-code[Commit Code] -->
+    build-push-docker-image[Build/Push Docker Image] -->
+    make-changes-in-k8s-folder[Make changes in k8s folder] -->
+    push-new-k8s-change-to-git[Push new k8s changes to git]
+    end
+
+
+    subgraph argocd[Argocd]
+    detect-new-changes-in-k8s-folder[Detect new changes in k8s folder] -->
+    apply-k8s-changes[Apply k8s changes]
+    end
+
+    push-new-k8s-change-to-git --> detect-new-changes-in-k8s-folder
+```
+
+## Allow Github Workflow push commit.
+- By default, github action doesn't have permission to push new commits.
+- Go to the github repository, `Settings`, `Actions`, `Worflow permissions` then select `Read and write permissons`.
+
+<details>
+
+<summary>Click to show screenshot</summary>
+
+![allow-action-push-commit](images/github-allow-action-push-commit.jpg)
+
+</details>
+
+### Provision a K8s cluster
+- Follow steps in [terraform/k8s](terraform/k8s/) to provision an EKS cluster on AWS.
+
+### Install ArgoCD
+```shell
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
+
+### Install Argocd CLI tool
+```shell
+brew install argocd
+```
+
+### Port forwarding Argocd to localhost
+```shell
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+```
+
+### Obtain Argocd admin password
+- Export variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in the terminal then run following code.
+```shell
+argocd admin initial-password -n argocd
 ```
