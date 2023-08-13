@@ -2,9 +2,8 @@ name: Deploy to Kubernetes
 
 on:
   push:
-    # Only run when tag version is pushed. For example: v1.0.0
-    tags:
-      - 'v*'
+    branches:
+      - main
     # Ignore changes in non-application files.
     paths-ignore:
       - 'k8s/*'
@@ -35,11 +34,11 @@ jobs:
       with:
         context: .
         push: true
-        tags: dinhtranvan/simple-http-server:${{ github.ref_name }}
+        tags: dinhtranvan/simple-http-server:${{ github.sha }}
 
     - name: Update new image version for deployment.
       run: |
-        sed -i "s/dinhtranvan\/simple-http-server:[a-f0-9]\{40\}/dinhtranvan\/simple-http-server:${{ github.ref_name }}/g" k8s/deployment.yaml
+        sed -i "s/dinhtranvan\/simple-http-server:[a-f0-9]\{40\}/dinhtranvan\/simple-http-server:${{ github.sha }}/g" k8s/deployment.yaml
         cat k8s/deployment.yaml
 
       # After push, argocd will detect the change and deploy new version of the application on k8s.
