@@ -3,17 +3,18 @@ name: Deploy to Kubernetes
 on:
   push:
     branches:
-      - argocd
-    paths-ignore:
-      - 'k8s/*'
+      - main
 
 jobs:
   deploy:
+    # disable for running CI.yaml
+    if: ${{ false }}
+
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
@@ -29,42 +30,30 @@ jobs:
       with:
         context: .
         push: true
-        tags: dinhtranvan/simple-http-server:${{ github.sha }}
+        tags: ${{ vars.DOCKER_REGISTRY_PATH }}:${{ github.sha }}
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-southeast-1
+    
+    - name: Install kubectl
+      uses: azure/setup-kubectl@v1
+      with:
+        version: 'latest'
+
+    - name: Configure kubectl for EKS
+      run: |
+        aws eks update-kubeconfig --region ap-southeast-1 --name ${{ secrets.EKS_CLUSTER_NAME }}
 
     - name: Update new image version for deployment.
       run: |
-        sed -i 's/dinhtranvan\/simple-http-server:[a-f0-9]\{40\}/dinhtranvan\/simple-http-server:${{ github.sha }}/g' k8s/deployment.yaml
+        sed -i 's/{{image-tag}}/${{ github.sha }}/g' k8s/deployment.yaml
         cat k8s/deployment.yaml
 
-    - name: Commit change to trigger Argocd
-      uses: EndBug/add-and-commit@v9
-      with:
-        committer_name: GitHub Actions
-        committer_email: actions@github.com
-        message: 'Deploy new image version ${{ github.sha }}.'
-
-    # - name: Configure AWS Credentials
-    #   uses: aws-actions/configure-aws-credentials@v2
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #     aws-region: ap-southeast-1
-    
-    # - name: Install kubectl
-    #   uses: azure/setup-kubectl@v1
-    #   with:
-    #     version: 'latest'
-
-    # - name: Configure kubectl for EKS
-    #   run: |
-    #     aws eks update-kubeconfig --region ap-southeast-1 --name ${{ secrets.EKS_CLUSTER_NAME }}
-
-    # - name: Update new image version for deployment.
-    #   run: |
-    #     sed -i 's/{{image-tag}}/${{ github.sha }}/g' k8s/deployment.yaml
-    #     cat k8s/deployment.yaml
-
-    # - name: Apply Kubernetes manifest
-    #   run: |
-    #     cd k8s
-    #     ./deploy-k8s.sh
+    - name: Apply Kubernetes manifest
+      run: |
+        cd k8s
+        ./deploy-k8s.sh

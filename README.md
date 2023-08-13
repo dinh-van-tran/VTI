@@ -157,7 +157,7 @@ flowchart TB
 - Go to Personal Settings (not project setting), `Developer settings`, `Personal access token`, `Fine-grained tokens`.
 
 <details>
-<summary>Click to show screensot</summary>
+<summary>Click to show screenshot</summary>
 
 ![Github get token screenshot](images/get-github-token-page.jpg)
 
@@ -168,7 +168,7 @@ flowchart TB
   + Commit status and metadata.
 
 <details>
-<summary>Click to show screensot</summary>
+<summary>Click to show screenshot</summary>
 
 ![Select permissions screenshot](images/select-permissions-for-github-token.jpg)
 
@@ -178,7 +178,7 @@ flowchart TB
 - Go back to Jenkins, go to Dashboard, `Manage Jenkins`, `Security`, `Credential`, `System`, `Global credentials (unrestricted)`.
 
 <details>
-<summary>Click to show screensot</summary>
+<summary>Click to show screenshot</summary>
 
 ![add-new-credential-option](images/jenkins-add-new-credential-option.jpg)
 
@@ -196,7 +196,7 @@ flowchart TB
 | `ID` | Github. |
 
 <details>
-<summary>Click to show screensot</summary>
+<summary>Click to show screenshot</summary>
 
 ![add-new-credential-detail](images/jenkins-add-new-credential-detail.jpg)
 
@@ -232,7 +232,7 @@ pipeline {
 - Go back to Jenkins Dashboard. On the left panel, click on `+ New Item`, fill `Enter an item name` then click on the `Pipeline` option.
 
 <details>
-<summary>Click to show screensot</summary>
+<summary>Click to show screenshot</summary>
 
 ![jenkins-create-new-item](images/jenkins-create-new-item.jpg)
 
@@ -246,7 +246,7 @@ pipeline {
 
 <details>
 
-<summary>Click to show screensot</summary>
+<summary>Click to show screenshot</summary>
 
 ![configure-general](images/jenkins-configure-general.jpg)
 
@@ -263,7 +263,7 @@ pipeline {
 
 <details>
 
-<summary>Click to show screensot</summary>
+<summary>Click to show screenshot</summary>
 
 ![configure-SCM](images/jenkins-configure-pipeline.jpg)
 
@@ -273,7 +273,7 @@ pipeline {
 
 <details>
 
-<summary>Click to show screensot</summary>
+<summary>Click to show screenshot</summary>
 
 ![pipeline-build-result](images/jenkins-pipeline-build-result.jpg)
 
@@ -292,7 +292,7 @@ pipeline {
 
 <details>
 
-<summary>Click to show screensot</summary>
+<summary>Click to show screenshot</summary>
 
 ![adding-jenkins-webhook](images/github-adding-jenkins-webhook.jpg)
 
@@ -335,7 +335,7 @@ stage('Build Docker Image') {
 
 <details>
 
-<summary>Click to show screensot</summary>
+<summary>Click to show screenshot</summary>
 
 ![jenkins-add-docker-hub-credentials](images/jenkins-add-docker-hub-credentials.jpg)
 
@@ -396,7 +396,7 @@ flowchart LR
 
 <details>
 
-<summary>Click to show screensot</summary>
+<summary>Click to show screenshot</summary>
 
 ![allow-action-push-commit](images/github-allow-action-push-commit.jpg)
 
@@ -422,6 +422,7 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
 
 ### Obtain Argocd admin password
+- Export variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in the terminal then run following code.
 ```shell
 argocd admin initial-password -n argocd
 ```
