@@ -373,21 +373,24 @@ stage('Push Docker Image') {
 ---
 title: CI/CD Workflow
 ---
-flowchart LR
+flowchart TB
     subgraph github-action[Github Action]
-    commit-code[Commit Code] -->
-    build-push-docker-image[Build/Push Docker Image] -->
-    make-changes-in-k8s-folder[Make changes in k8s folder] -->
-    push-new-k8s-change-to-git[Push new k8s changes to git]
+      commit-code[Commit Code] -->
+      build-push-docker-image[Build/Push Docker Image] -->
+      make-changes-in-k8s-folder[Make changes in k8s folder] -->
+      push-new-k8s-change-to-git[Push new k8s changes to git]
     end
 
+    subgraph git-repo[Git Repository]
+    end
 
     subgraph argocd[Argocd]
-    detect-new-changes-in-k8s-folder[Detect new changes in k8s folder] -->
-    apply-k8s-changes[Apply k8s changes]
+      detect-new-changes-in-k8s-folder[Detect new changes in k8s folder] -->
+      apply-k8s-changes[Apply k8s changes]
     end
 
-    push-new-k8s-change-to-git --> detect-new-changes-in-k8s-folder
+    push-new-k8s-change-to-git --> git-repo
+    detect-new-changes-in-k8s-folder --> git-repo
 ```
 
 ## Allow Github Workflow push commit.
@@ -426,3 +429,16 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```shell
 argocd admin initial-password -n argocd
 ```
+
+### Create a new app
+- By CLI
+```shell
+argocd app create simple-http-server \
+  --repo https://github.com/dinh-van-tran/VTI.git \
+  --path k8s \
+  --revision main \
+  --dest-server https://kubernetes.default.svc 
+  --dest-namespace default
+```
+
+- By UI, go to [argocd](https://localost:8080) to create a new application.
