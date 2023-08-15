@@ -42,7 +42,8 @@ jobs:
 
     - name: Update new image version for deployment.
       run: |
-        sed -i "s/dinhtranvan\/simple-http-server:[a-f0-9]\{40\}/dinhtranvan\/simple-http-server:${{ github.ref_name }}/g" k8s/deployment.yaml
+        snap install yq
+        yq -i '.spec.template.spec.containers[0].image = "dinhtranvan/simple-http-server:${{ github.ref_name }}"' k8s/deployment.yaml
         cat k8s/deployment.yaml
 
       # After push, argocd will detect the change and deploy new version of the application on k8s.
