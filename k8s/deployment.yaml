@@ -13,16 +13,15 @@ spec:
         app: simple-http-server
     spec:
       containers:
-      - name: simple-http-server
-        image: dinhtranvan/simple-http-server:v0.4
-        ports:
-        - containerPort: 8080
-        volumeMounts:
-        - name: secret-volume
-          mountPath: /etc/secret-volume
-          readOnly: true
-
+        - name: simple-http-server
+          image: dinhtranvan/simple-http-server:v0.12
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: secret-volume
+              mountPath: /etc/secret-volume
+              readOnly: true
       volumes:
-      - name: secret-volume
-        secret:
-          secretName: secret
+        - name: secret-volume
+          secret:
+            secretName: secret
