@@ -42,7 +42,7 @@ jobs:
 
     - name: Update new image version for deployment.
       run: |
-        snap install yq
+        sudo snap install -y yq
         yq -i '.spec.template.spec.containers[0].image = "dinhtranvan/simple-http-server:${{ github.ref_name }}"' k8s/deployment.yaml
         cat k8s/deployment.yaml
 
