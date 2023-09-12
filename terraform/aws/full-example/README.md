@@ -18,6 +18,7 @@
 | 7 | EC2 | 1 | Bastion host for admin access. |
 
 - The subnets are to provision in 2 Availability Zones:
+
 | Number | Name | Availability Zone |
 | ------ | ---- | -------- |
 | 1 | Public Subnet | 1 |
