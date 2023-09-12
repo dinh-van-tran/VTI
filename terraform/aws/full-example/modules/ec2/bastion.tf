@@ -1,22 +1,6 @@
-variable "environment" {
-  type = string
-}
-
-variable "availability_zone" {
-  type = string
-}
-
-variable "public_subnet_id" {
-  type = string
-}
-
-variable "public_security_group_id" {
-  type = string
-}
-
 resource "aws_instance" "dinhvt_bastion" {
-  ami                    = "ami-0df7a207adb9748c7"
-  instance_type          = "t2.medium"
+  ami                    = var.instance_ami
+  instance_type          = var.instance_type
   subnet_id              = var.public_subnet_id
   vpc_security_group_ids = [var.public_security_group_id]
   # key_name               = var.key_name
@@ -37,7 +21,7 @@ resource "aws_instance" "dinhvt_bastion" {
 # Add storage
 resource "aws_ebs_volume" "dinhvt_bastion_storage" {
   availability_zone = var.availability_zone
-  size              = 64
+  size              = var.storage_size
   type              = "gp2"
 }
 
