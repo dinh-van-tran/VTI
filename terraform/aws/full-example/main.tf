@@ -12,9 +12,9 @@ terraform {
 provider "aws" {
   region = "ap-southeast-1"
 
-  # access_key = "ASIAVF4JT4FEELAHB2WF"
-  # secret_key = "yhPByrHEOyJMFUaJYxzCZfSTcXIXtbWYPiBsbUUf"
-  # token      = "IQoJb3JpZ2luX2VjECUaDmFwLXNvdXRoZWFzdC0xIkcwRQIgVNS6wWv80XVyoiEzT3P+dBBO65nSYNMFS0Y9iIUqJYwCIQCnFOBUKLWCo9v1eiXPyIm3INCPn6m5aDtpdotjKN29Oyr0AQj+//////////8BEAMaDDM1NjIzNDAyNzMzNiIMODoxmZeN9lQCr/JaKsgBtxZAwyDqFrFuzpQpMeV1iIDqQTocQu1A2JqqR1yGwSdgN9bFPvi8egsBF904hwHN2a4PoCuPSnb4wBUusyWZbxJqXy4nCVZBObF9D2TGrHVxgDHw/ls2wBX89z08OBmabsMkGh5gsRuw93sgDNx9iFvXOUOOgyFcWRDL4jPlwOqM71UVUEX5TQFkKkO8+K7lj/zAE3xQm6oRhZh/6PZQECQx9Fdi1OM4HXDG+hIcGclgc/8zIInejFAS30ARoy5zGU+u3Dtzaasw7+D/pwY6mAGwRJOFl3QOIttBMl+8bxYfHdXP10vUwheh9DhccgRH/Y3UQhjWCwOLRHFqmU2+MThfQ6XbwHx+mfppjOWn5XBDoidIb8ZrzDURVsZRcGclHAT8f6UBAffKIS4zNlq2wibJdO39/0q+kb8vAMr5QB9x0UO8Gj1+zviOVsoK5tbneQuKY9lH/PGUKkq7K7W6M3Mj1FyMOUB7MA=="
+  access_key = ""
+  secret_key = ""
+  token      = ""
 }
 
 module "vpc" {
@@ -55,14 +55,14 @@ module "internet_gateway" {
 }
 
 # Provision a bastion host for admin access
-# module "ec2" {
-#   source = "./modules/ec2"
+module "ec2" {
+  source = "./modules/ec2"
 
-#   environment              = local.environment
-#   availability_zone        = "ap-southeast-1b"
-#   public_subnet_id         = module.subnets.public_subnet_id
-#   public_security_group_id = module.security_groups.public_security_group_id
-# }
+  environment              = local.environment
+  availability_zone        = "ap-southeast-1b"
+  public_subnet_id         = module.subnets.public_subnet_id
+  public_security_group_id = module.security_groups.public_security_group_id
+}
 
 # Provision
 # 1. An ECS Fargate cluster running a simple nginx container
@@ -84,12 +84,12 @@ module "ecs" {
 # Provision relational database service
 # 1. A PostgreSQL database
 # 2. A MariaDB database
-# module "rds" {
-#   source = "./modules/rds"
+module "rds" {
+  source = "./modules/rds"
 
-#   subnet_ids = [
-#     module.subnets.private_subnet_3_id,
-#     module.subnets.private_subnet_4_id,
-#   ]
-#   # private_subnet_3_cidr_block = module.subnets.private_subnet_3_cidr_block
-# }
+  subnet_ids = [
+    module.subnets.private_subnet_3_id,
+    module.subnets.private_subnet_4_id,
+  ]
+  # private_subnet_3_cidr_block = module.subnets.private_subnet_3_cidr_block
+}
